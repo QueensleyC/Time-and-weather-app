@@ -11,22 +11,28 @@ class ChooseLocation extends StatefulWidget {
 }
 
 class _ChooseLocationState extends State<ChooseLocation> {
-  final TextEditingController _cityController = TextEditingController();
-
   List tz = [];
+  List filteredTz = [];
 
   getData() async {
     TimeZones timeZone = TimeZones();
     tz = await timeZone.availableTimeZones();
+
     return tz;
   }
 
   @override
   Widget build(BuildContext context) {
     Future<void> updateTime(int index) async {
-      String location = tz[index].toString().split("/")[1];
+      String location = tz[index].toString();
+
+      if (tz[index].toString().contains("/")) {
+        location = tz[index].toString().split("/")[
+            1]; //removes "/" that separated continent from city and picks only city
+      }
       if (location.contains("_")) {
-        location = location.replaceAll("_", " ");
+        location =
+            location.replaceAll("_", " "); //removes underscore if there's any
       }
 
       WorldTime instance =
@@ -34,9 +40,10 @@ class _ChooseLocationState extends State<ChooseLocation> {
       await instance.getTime();
 
       WeatherData weather = WeatherData();
-      await weather.weatherData(location);
+      await weather
+          .weatherData(location); //gets weather data based on the location
 
-      //Navigate to home screen and pass data to home page
+      //Navigate to home screen and pass data to home screen
       Navigator.pushReplacementNamed(context, '/home', arguments: {
         'location': instance.location,
         'time': instance.time,
@@ -46,7 +53,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
         'date': instance.date,
         'isDst': instance.isDst,
         'temp': weather.temp,
-        'feels_like': weather.feels_like,
+        'feels_like': weather.feelsLike,
         'humidity': weather.humidity,
         'wind': weather.wind,
       });
@@ -62,14 +69,11 @@ class _ChooseLocationState extends State<ChooseLocation> {
         padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 4),
         child: Column(
           children: [
-            TextField(
-              controller: _cityController,
-              decoration: const InputDecoration(
-                  hintText: "Search City", border: OutlineInputBorder()),
-            ),
+            _searchBar(),
             Expanded(
               child: Card(
                 child: FutureBuilder(
+                  //Use future builder because the data takes a few seconds to be retrieved
                   future: getData(),
                   builder: (context, snapshot) {
                     if (snapshot.data == null) {
@@ -78,12 +82,19 @@ class _ChooseLocationState extends State<ChooseLocation> {
                       );
                     } else {
                       return ListView.builder(
-                        itemCount: tz.length,
+                        itemCount:
+                            filteredTz.isEmpty ? tz.length : filteredTz.length,
+                        //the item count depends on whether the user is using the search field
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () => updateTime(index),
                             child: ListTile(
-                              title: Text(tz[index]),
+                              title: Text(
+                                //text depends on what is in the searchbar
+                                filteredTz.isEmpty
+                                    ? tz[index]
+                                    : filteredTz[index],
+                              ),
                             ),
                           );
                         },
@@ -96,6 +107,27 @@ class _ChooseLocationState extends State<ChooseLocation> {
           ],
         ),
       ),
+    );
+  }
+
+  _searchBar() {
+    return TextField(
+      decoration: const InputDecoration(
+        hintText: "Search City",
+        border: OutlineInputBorder(),
+      ),
+      onChanged: (query) {
+        setState(() {
+          query = query
+              .toUpperCase(); //changes text written in search bar to upper case
+          filteredTz = tz;
+          filteredTz = tz
+              .where((city) => city.toString().toUpperCase().contains(
+                  query)) //changes text in list to upper case so that our search is case insensitive and checks if query is in the list item
+              .toList(); //converts the iterable to a list
+          // print("filtered list is $filteredTz");
+        });
+      },
     );
   }
 }

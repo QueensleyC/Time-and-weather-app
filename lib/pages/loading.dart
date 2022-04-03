@@ -19,7 +19,7 @@ class _LoadingState extends State<Loading> {
     WorldTime data = WorldTime(
         location: 'Amsterdam', url: 'Europe/Amsterdam');
     await data.getTime();
-    // print(data.time);
+
     WeatherData weather = WeatherData();
     await weather.weatherData("Amsterdam");
 
@@ -30,7 +30,7 @@ class _LoadingState extends State<Loading> {
       "isDay": data.isDay,
       "dayOfWeek": data.dayOfWeek,
       'temp': weather.temp,
-      'feels_like': weather.feels_like,
+      'feels_like': weather.feelsLike,
       'humidity': weather.humidity,
       'wind': weather.wind,
     });

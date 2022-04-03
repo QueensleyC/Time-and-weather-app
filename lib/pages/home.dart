@@ -84,7 +84,7 @@ class _HomeState extends State<Home> {
                         color: textColor,
                         fontSize: 15,
                         letterSpacing: 2,
-                        fontWeight: FontWeight.w200,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     sizedBox(20),

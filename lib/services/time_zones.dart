@@ -13,7 +13,8 @@ class TimeZones{
 
       final response = await get(Uri.parse("https://www.timeapi.io/api/TimeZone/AvailableTimeZones"));
       final jsonData = jsonDecode(response.body);
-      String jsonDataCleaned = jsonData.toString().replaceAll("[", " ");
+      String jsonDataCleaned = jsonData.toString().replaceAll("[", "");
+      jsonDataCleaned = jsonDataCleaned.toString().replaceAll("]", "");
       List first_timeZones = jsonDataCleaned.toString().split(",");
 
       for(var each_city in first_timeZones){
