@@ -5,7 +5,7 @@ import 'package:world_time_app/model/city.dart';
 
 class TimeZones{
 
-  List timeZones = [];
+  List timeZones_cleaned = [];
 
   Future<List> availableTimeZones() async {
 
@@ -13,18 +13,18 @@ class TimeZones{
 
       final response = await get(Uri.parse("https://www.timeapi.io/api/TimeZone/AvailableTimeZones"));
       final jsonData = jsonDecode(response.body);
-      String jsonDataCleaned = jsonData.toString().replaceAll("[", "");
-      jsonDataCleaned = jsonDataCleaned.toString().replaceAll("]", "");
-      List first_timeZones = jsonDataCleaned.toString().split(",");
+      String jsonDataCleaned = jsonData.toString().replaceAll("[", ""); //removes square braces from the list passed
+      jsonDataCleaned = jsonDataCleaned.toString().replaceAll("]", ""); //removes square braces from the list passed
+      List timeZones = jsonDataCleaned.toString().split(",");
 
-      for(var each_city in first_timeZones){
-        timeZones.add(each_city);
+      for(var each_city in timeZones){
+        timeZones_cleaned.add(each_city);
       }
 
     }catch(err){
       print("Time zone error is ${err.toString()}");
     }
-    return timeZones;
+    return timeZones_cleaned;
   }
 
 }

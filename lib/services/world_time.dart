@@ -33,9 +33,9 @@ class WorldTime {
       timeZone = jsonData['timeZone'];
       print("date: $date");
 
-      dayOfWeek = jsonData['dayOfWeek'];
+      dayOfWeek = jsonData['dayOfWeek']; // gets the day of the week
 
-      isDay = jsonData['hour'] > 6 && jsonData['hour'] < 18 ? true : false;
+      isDay = jsonData['hour'] > 6 && jsonData['hour'] < 18 ? true : false; //Tells us if it's day or night
     } catch (e) {
       print("Couldn't get url. \n $e");
     }

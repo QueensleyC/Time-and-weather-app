@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget additionalInformation(
+Widget AdditionalInformation(
     {required bool isDay,
     required double temperature,
     required double feelsLike,

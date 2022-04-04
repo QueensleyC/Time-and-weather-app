@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:world_time_app/services/time_zones.dart';
 import 'package:world_time_app/services/weather.dart';
 import 'package:world_time_app/widget/flexible.dart';
-import 'package:world_time_app/widget/weather_info.dart';
+import 'package:world_time_app/widget/additional_info.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -164,7 +164,7 @@ class _HomeState extends State<Home> {
                     const SizedBox(
                       height: 10,
                     ),
-                    additionalInformation(
+                    AdditionalInformation(
                       isDay: data["isDay"],
                       temperature: data["temp"],
                       feelsLike: data["feels_like"],

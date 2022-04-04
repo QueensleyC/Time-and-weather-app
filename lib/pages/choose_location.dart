@@ -24,10 +24,13 @@ class _ChooseLocationState extends State<ChooseLocation> {
   @override
   Widget build(BuildContext context) {
     Future<void> updateTime(int index) async {
-      String location = tz[index].toString();
 
-      if (tz[index].toString().contains("/")) {
-        location = tz[index].toString().split("/")[
+      String timeZone = filteredTz.isEmpty? tz[index].toString() : filteredTz[index].toString();
+
+      String location = timeZone;
+
+      if (timeZone.toString().contains("/")) {
+        location = timeZone.toString().split("/")[
             1]; //removes "/" that separated continent from city and picks only city
       }
       if (location.contains("_")) {
@@ -36,7 +39,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
       }
 
       WorldTime instance =
-          WorldTime(url: tz[index].toString().trim(), location: location);
+          WorldTime(url: timeZone.trim(), location: location);
       await instance.getTime();
 
       WeatherData weather = WeatherData();
