@@ -13,7 +13,7 @@ class WeatherData{
 
   String address = "https://api.openweathermap.org/data/2.5/weather?q="; //website address
 
-  //NOTE: make sure to use your OWN apikey, you can make a free account on openweathermap.api
+  //NOTE: make sure to use your OWN apikey, you can make a free account on https://openweathermap.org/api
   String apiKey = "&appid={ENTER YOUR API KEY HERE}&units=metric";
 
   weatherData(String cityName)async{
